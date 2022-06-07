@@ -1,15 +1,15 @@
 
 //code for enter button if user is inside the input box
-const enterkey = document.getElementsByClassName("inputtext")[0];
-enterkey.addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-        changelistitem();
-    }
-})
+// const enterkey = document.getElementsByClassName("inputtext")[0];
+// enterkey.addEventListener("keyup", function(event) {
+//     if (event.key === "Enter") {
+//         changelistitem();
+//     }
+// })
 //if user clicks on textbox, clear the default text
-enterkey.addEventListener("click", function() {
-    document.getElementById("listadd").value = "";
-})
+// enterkey.addEventListener("click", function() {
+//     document.getElementById("listadd").value = "";
+// })
 
 //adds item to list using value in the input box
 function changelistitem() {
@@ -22,57 +22,6 @@ function changelistitem() {
     document.getElementById("listadd").placeholder = "Type in a task";
     //get user cursor focus off textbox
     document.getElementById("listadd").blur();
-}
-
-//checks if the list containing tasks is empty 
-function isEmpty() {
-    if ((document.getElementById("mylist").innerHTML.trim() == "") == false) {
-        //number of tasks
-        document.getElementById("tasks").textContent = "Number of Tasks: " + document.getElementsByTagName("li").length;
-    }
-    else {
-        document.getElementById("tasks").textContent = "Woohoo! All tasks completed.";
-    }
-}
-
-//clears all tasks
-function clearitemlist() {
-    document.getElementById("mylist").innerHTML = "";
-    isEmpty();
-}
-
-//remove task
-function removetask() {
-    if ((document.getElementById("mylist").innerHTML.trim() == "") != false) {
-        
-        return;
-    }
-    document.getElementById("select").innerHTML = "Now select the task you want to remove.";
-    var listss = document.getElementsByTagName("li");
-    if (document.getElementById("cnclbtn") == null) {
-        var cancelbutton = document.createElement("button");
-    cancelbutton.innerHTML = "cancel";
-    cancelbutton.id = "cnclbtn";
-    cancelbutton.onclick = function(event) {
-        var btn = document.getElementById("cnclbtn");
-        btn.remove();
-        for (var k=0; k<listss.length; k++) {
-            listss[k].onclick = function(event) {}
-        }
-    }
-    document.body.appendChild(cancelbutton);
-    }
-    for (var k=0; k<listss.length; k++) {
-        listss[k].onclick = function(event) {
-            document.getElementById("cnclbtn").remove();
-            this.remove();
-            for (var k=0; k<listss.length; k++) {
-                listss[k].onclick = function(event) {}
-            }
-            document.getElementById("select").innerHTML = "";
-            isEmpty();
-        }
-    }
 }
 
 function sleep(ms) {
@@ -89,9 +38,9 @@ var start;
 async function getapikey() {
     start = 0;
     apikey = document.getElementById("listadd").value;
-    gamenamestuff = document.getElementById("gamenamething").value;
-    gametagstuff = document.getElementById("gametagthing").value;
-    await sendrequest(apikey);
+    // gamenamestuff = document.getElementById("gamenamething").value;
+    // gametagstuff = document.getElementById("gametagthing").value;
+    await checkapikey(apikey);
 }
 
 async function sendleaderboardrequest(actid,index,apikey) { 
@@ -108,7 +57,79 @@ async function sendleaderboardrequest(actid,index,apikey) {
     request.send();
 }
 
+
+var thecontainer = document.getElementById("containerforstuff");
+
+async function replacecontainerfirst() {
+    thecontainer.innerHTML = "";
+    thecontainer.classList.remove("removed");
+
+    thecontainer.append("Please enter the player's name and tag");
+
+    let theinputbox1 = document.createElement("input", );
+    thecontainer.append(theinputbox1);
+    theinputbox1.id = "gamenamething";
+    theinputbox1.placeholder = "Enter the Game Name";
+    theinputbox1.type = "text";
+    theinputbox1.classList.add("listadd");
+
+    thecontainer.append(document.createElement("br"));
+
+    let theinputbox2 = document.createElement("input");
+    thecontainer.append(theinputbox2);
+    theinputbox2.id = "gametagthing";
+    theinputbox2.placeholder = "Enter the Game Tag";
+    theinputbox2.type = "text";
+    theinputbox2.classList.add("listadd");
+
+    thecontainer.append(document.createElement("br"));
+
+    let thesubmitbutton = document.createElement("button");
+    thecontainer.append(thesubmitbutton);
+    thesubmitbutton.classList.add("btn1");
+    thesubmitbutton.id = "thesubmitbuttonid";
+    document.getElementById("thesubmitbuttonid").addEventListener("onclick", sendrequest(apikey));
+    thesubmitbutton.textContent = "Check Leaderboard";
+
+    // document.getElementById("containerforstuff").append(<input type="text" class="inputtext" id="gamenamething" placeholder="Enter Your Game Name"/><br>);
+    // document.getElementById("containerforstuff").append('<input type="text" class="inputtext" id="gametagthing" placeholder="Enter Your Game Tag"/><br>');
+    // document.getElementById("containerforstuff").append('<p id="yesorno">player is not on leaderboard yet</p>');
+    // document.getElementById("containerforstuff").append('<p id="rank"></p>');
+    // document.getElementById("containerforstuff").append('<p id="select"></p>');
+    // document.getElementById("containerforstuff").append('<p id="immortalversion"></p>');
+}
+
+
+async function checkapikey(apikey) {
+    document.getElementById("errormsg").textContent = "";
+
+    var request = new XMLHttpRequest();
+
+    request.open('GET', 'https://na.api.riotgames.com/val/content/v1/contents?api_key='+apikey)
+    request.onload = async function () {
+        console.log(request.status);
+        var data = JSON.parse(this.response);
+        console.log(request.status);
+
+        thecontainer.classList.add("removed");
+        
+        thecontainer.addEventListener('transitionend', () => {
+            replacecontainerfirst();
+        });
+    }
+  
+    request.onerror = async function () {
+        document.getElementById("errormsg").textContent = "This key isn't valid!";
+    }
+    request.send();
+}
+
+
 async function sendrequest(apikey) {
+
+    gamenamestuff = document.getElementById("gamenamething").value;
+    gametagstuff = document.getElementById("gametagthing").value;
+
     var request = new XMLHttpRequest();
 
     request.open('GET', 'https://na.api.riotgames.com/val/content/v1/contents?api_key='+apikey)
