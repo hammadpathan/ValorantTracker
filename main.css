@@ -1,0 +1,85 @@
+body {
+    background-color: #7fe6dd;
+    margin-left: 40%;
+    margin-top: 10%;
+    color: white;
+  }
+  .header {
+    text-align: center;
+    margin-left: 0px;
+  }
+  h1 {
+    font-size: 80px;
+    margin-left: -13%;
+    margin-bottom: 30px;
+  }
+  .body {
+    margin-left: 100px;
+    font-size: 20px;
+    font: Arial;
+  }
+  .main title {
+    font: Verdana;
+    text-align: right;
+  }
+  h2 {
+    color: #efbaf7;
+  }
+  
+  .btn {
+    width: 17%;
+    background: rgb(0, 0, 0);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    margin-top: 50px;
+    margin-right: 120px;
+    margin-left: -12%;
+  }
+  
+  .btn:hover {
+    background: #000;
+  }
+  
+  #cnclbtn {
+    width: 17%;
+    background: rgb(66, 107, 35);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    margin-top: 0px;
+    margin-right: 120px;
+    margin-left: 8%;
+  }
+  #cnclbtn:hover {
+    background: #000;
+  }
+  
+  input {
+    border: none;
+    appearance: none;
+    background: #f2f2f2;
+    padding: 12px;
+    border-radius: 3px;
+    width: 400px;
+    outline: none;
+    margin-top: 30px;
+    margin-left: 2%;
+  }
+  .numtask {
+    font-size: 25px;
+    margin-left: 2%;
+  }
+  li {
+    font-size: 20px;
+  }
+  li:hover {
+    color: rgb(88, 91, 84);
+    margin-right: 600px;
+  }
