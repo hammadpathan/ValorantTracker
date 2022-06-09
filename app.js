@@ -64,12 +64,21 @@ async function replacecontainerfirst() {
     thecontainer.innerHTML = "";
     thecontainer.classList.remove("removed");
 
-    thecontainer.append("Please enter the player's name and tag");
+    thecontainer.append("PLEASE ENTER THE PLAYER'S NAME AND TAG");
+
+    thecontainer.append(document.createElement("br"));
+
+    let explayermsg = document.createElement("p");
+    thecontainer.append(explayermsg);
+    explayermsg.classList.add("explayer");
+    explayermsg.textContent = "ex: player#NA1";
+
+    thecontainer.append(document.createElement("br"));
 
     let theinputbox1 = document.createElement("input", );
     thecontainer.append(theinputbox1);
     theinputbox1.id = "gamenamething";
-    theinputbox1.placeholder = "Enter the Game Name";
+    theinputbox1.placeholder = "player";
     theinputbox1.type = "text";
     theinputbox1.classList.add("listadd");
 
@@ -78,9 +87,16 @@ async function replacecontainerfirst() {
     let theinputbox2 = document.createElement("input");
     thecontainer.append(theinputbox2);
     theinputbox2.id = "gametagthing";
-    theinputbox2.placeholder = "Enter the Game Tag";
+    theinputbox2.placeholder = "NA1";
     theinputbox2.type = "text";
     theinputbox2.classList.add("listadd");
+
+    thecontainer.append(document.createElement("br"));
+
+    let seconderrmsg = document.createElement("p");
+    thecontainer.append(seconderrmsg);
+    seconderrmsg.classList.add("errormsg");
+    seconderrmsg.id = "seconderrormsg";
 
     thecontainer.append(document.createElement("br"));
 
@@ -88,8 +104,20 @@ async function replacecontainerfirst() {
     thecontainer.append(thesubmitbutton);
     thesubmitbutton.classList.add("btn1");
     thesubmitbutton.id = "thesubmitbuttonid";
-    document.getElementById("thesubmitbuttonid").addEventListener("onclick", sendrequest(apikey));
-    thesubmitbutton.textContent = "Check Leaderboard";
+
+    document.getElementById("thesubmitbuttonid").addEventListener("click", function() {
+
+        document.getElementById("seconderrormsg").textContent = "";
+
+        if (theinputbox1.value == "" || theinputbox2.value == "") {
+            document.getElementById("seconderrormsg").textContent = "INVALID AGENT";
+            return;
+        }
+        else {
+            sendrequest(apikey);
+        }
+    });
+    thesubmitbutton.textContent = "CHECK LEADERBOARD";
 
     // document.getElementById("containerforstuff").append(<input type="text" class="inputtext" id="gamenamething" placeholder="Enter Your Game Name"/><br>);
     // document.getElementById("containerforstuff").append('<input type="text" class="inputtext" id="gametagthing" placeholder="Enter Your Game Tag"/><br>');
@@ -101,7 +129,7 @@ async function replacecontainerfirst() {
 
 
 async function checkapikey(apikey) {
-    document.getElementById("errormsg").textContent = "";
+    document.getElementById("firsterrormsg").textContent = "";
 
     var request = new XMLHttpRequest();
 
@@ -119,7 +147,7 @@ async function checkapikey(apikey) {
     }
   
     request.onerror = async function () {
-        document.getElementById("errormsg").textContent = "This key isn't valid!";
+        document.getElementById("firsterrormsg").textContent = "INVALID KEY!";
     }
     request.send();
 }
@@ -157,11 +185,11 @@ async function sendrequest(apikey) {
 
 async function checkifplayerinarray(thedata,playername,gametag) {
     for (var i=0; i < 200; i++) {
-        document.getElementById("rank").textContent = "Leaderboard Rank: " + thedata[i].leaderboardRank;
-        document.getElementById("select").textContent = thedata[i].gameName + "#" + thedata[i].tagLine;
-        if (thedata[i].gameName == playername && thedata[i].tagLine == gametag) {
-            return true;
-        }
+        // document.getElementById("rank").textContent = "Leaderboard Rank: " + thedata[i].leaderboardRank;
+        // document.getElementById("select").textContent = thedata[i].gameName + "#" + thedata[i].tagLine;
+        // if (thedata[i].gameName == playername && thedata[i].tagLine == gametag) {
+        //     return true;
+        // }
     }
     return false;
 }
