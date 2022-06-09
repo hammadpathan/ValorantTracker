@@ -38,8 +38,6 @@ var start;
 async function getapikey() {
     start = 0;
     apikey = document.getElementById("listadd").value;
-    // gamenamestuff = document.getElementById("gamenamething").value;
-    // gametagstuff = document.getElementById("gametagthing").value;
     await checkapikey(apikey);
 }
 
@@ -128,6 +126,13 @@ async function replacecontainerfirst() {
 }
 
 
+async function replacecontainersecond() {
+    thecontainer.innerHTML = "";
+    thecontainer.classList.remove("removed");
+
+    //put the third page for searching and identifying the player
+}
+
 async function checkapikey(apikey) {
     document.getElementById("firsterrormsg").textContent = "";
 
@@ -162,6 +167,13 @@ async function sendrequest(apikey) {
 
     request.open('GET', 'https://na.api.riotgames.com/val/content/v1/contents?api_key='+apikey)
     request.onload = async function () {
+
+        thecontainer.classList.add("removed");
+        
+        thecontainer.addEventListener('transitionend', () => {
+            replacecontainersecond();
+        });
+
         var data = JSON.parse(this.response);
         lastactid = data.acts[data.acts.length - 2].id;
         await sendleaderboardrequest(lastactid,start,apikey);
@@ -185,11 +197,11 @@ async function sendrequest(apikey) {
 
 async function checkifplayerinarray(thedata,playername,gametag) {
     for (var i=0; i < 200; i++) {
-        // document.getElementById("rank").textContent = "Leaderboard Rank: " + thedata[i].leaderboardRank;
-        // document.getElementById("select").textContent = thedata[i].gameName + "#" + thedata[i].tagLine;
-        // if (thedata[i].gameName == playername && thedata[i].tagLine == gametag) {
-        //     return true;
-        // }
+        document.getElementById("rank").textContent = "Leaderboard Rank: " + thedata[i].leaderboardRank;
+        document.getElementById("select").textContent = thedata[i].gameName + "#" + thedata[i].tagLine;
+        if (thedata[i].gameName == playername && thedata[i].tagLine == gametag) {
+            return true;
+        }
     }
     return false;
 }
