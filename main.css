@@ -117,19 +117,25 @@ input:hover {
   background: rgb(27, 27, 27);
 }
 
-li {
-  font-size: 20px;
-}
-
-li:hover {
-  color: rgb(88, 91, 84);
-  margin-right: 600px;
-}
-
 .explayer {
   font-family: "CustomFont";
   text-align: center;
   font-size: 20px;
   color:rgb(0, 0, 0);
   margin-bottom: -50px;
+}
+
+.currentplayer {
+  font-family: "CustomFont";
+  text-align: left;
+  font-size: 20px;
+  color:rgb(0, 0, 0);
+  margin-bottom: -50px;
+}
+
+.rankimage {
+  width: 190px;
+  height: 190px;
+  border: 1px solid #000000;
+  margin-left: 470px;
 }

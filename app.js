@@ -131,6 +131,24 @@ async function replacecontainersecond() {
     thecontainer.classList.remove("removed");
 
     //put the third page for searching and identifying the player
+
+    thecontainer.append("LOOKING FOR: " + gamenamestuff + "#" + gametagstuff);
+
+    thecontainer.append(document.createElement("hr"));
+
+    //thecontainer.append(document.createElement("br"));
+
+    let currentplayer = document.createElement("p");
+    thecontainer.append(currentplayer);
+    currentplayer.classList.add("currentplayer");
+    currentplayer.textContent = "SEARCHING:";
+
+    thecontainer.append(document.createElement("br"));
+
+    let rankimage = document.createElement("img");
+    thecontainer.append(rankimage);
+    rankimage.classList.add("rankimage");
+    rankimage.src = "Immortal1.png";
 }
 
 async function checkapikey(apikey) {
