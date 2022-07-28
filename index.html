@@ -15,17 +15,16 @@
 
     <div id="containerforstuff" class="enterdevapikey">
 
-        <p>PLEASE ENTER YOUR DEVELOPMENT API KEY</p>
-        <input type="text" class="listadd" id="listadd" placeholder="ENTER KEY"/><br>
-        <p id="firsterrormsg" class="errormsg"></p>
-        <button onclick="getapikey()" class="btn">Check</button>
+        <p id="mainmessage" >PLEASE ENTER THE PLAYER'S NAME AND TAG</p><br>
+        <p class="explayer">ex: player#NA1</p><br>
+
+        <input type="text" class="listadd" id="gamenamething" placeholder="player"/><br>
+        <input type="text" class="listadd" id="gametagthing" placeholder="NA1"><br>
+        <p id="seconderrormsg" class="errormsg"></p><br>
+
+        <button id="thesubmitbuttonid" onclick="checktheleaderboard()" class="btn1">CHECK LEADERBOARD</button>
 
     </div>
-
-    <!-- <p id="yesorno">player is not on leaderboard yet</p>
-    <p id="rank"></p>
-    <p id="select"></p>
-    <p id="immortalversion"></p> -->
 
     <div class="box"></div>
 
