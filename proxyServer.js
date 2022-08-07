@@ -54,8 +54,6 @@ app.get('/leaderboard/:gameName/:tagLine', async (req, res) => {
 
         const info = await get200Leaderboard(actId, index);
 
-        // console.log(info);
-
         if (info == 404) {
             continue;
         }
@@ -66,10 +64,7 @@ app.get('/leaderboard/:gameName/:tagLine', async (req, res) => {
                 continue;
             }
 
-            // console.log((info.players[j].gameName).toLowerCase());
-
             if (((info.players[j].gameName).toLowerCase() == gameName.toLowerCase()) && ((info.players[j].tagLine).toLowerCase() == (tagLine).toLowerCase())) {
-                // console.log(info.players[j]);
                 res.status(200).send(info.players[j]);
                 return;
             }

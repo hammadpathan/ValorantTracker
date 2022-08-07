@@ -80,8 +80,6 @@ function replacecontainersecond() {
     thecontainer.innerHTML = "";
     thecontainer.classList.remove("removed");
 
-    //put the third page for searching and identifying the player
-
     thecontainer.append("LOOKING FOR: " + gamenamestuff + "#" + gametagstuff);
 
     thecontainer.append(document.createElement("hr"));
