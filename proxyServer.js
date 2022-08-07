@@ -7,7 +7,7 @@ var app = express();
 
 app.use(cors());
 
-const API_KEY = "RGAPI-5760d83a-831b-4c59-a772-327c11a86acb";
+const API_KEY = "RGAPI-2b1faece-43d5-4fe5-b72a-ba765d7eb2bd";
 
 function getActID() {
     return axios.get("https://na.api.riotgames.com" + "/val/content/v1/contents" + "?api_key=" + API_KEY)
@@ -26,7 +26,9 @@ function get200Leaderboard(actId, startIndex) {
     return axios.get("https://na.api.riotgames.com" + "/val/ranked/v1/leaderboards/by-act/" + actId + "?size=200&startIndex=" + startIndex + "&api_key=" + API_KEY)
         .then(response => {
             return response.data
-        }).catch(err => err);
+        }).catch(err => {
+                return 404;
+            });
 }
 
 function sleep(ms) {
@@ -52,12 +54,22 @@ app.get('/leaderboard/:gameName/:tagLine', async (req, res) => {
 
         const info = await get200Leaderboard(actId, index);
 
+        // console.log(info);
+
+        if (info == 404) {
+            continue;
+        }
+
         for (var j = 0; j < info.players.length; j++) {
 
-            console.log((info.players[j].gameName).toLowerCase());
+            if (info.players[j].gameName == undefined) {
+                continue;
+            }
+
+            // console.log((info.players[j].gameName).toLowerCase());
 
             if (((info.players[j].gameName).toLowerCase() == gameName.toLowerCase()) && ((info.players[j].tagLine).toLowerCase() == (tagLine).toLowerCase())) {
-                console.log(info.players[j]);
+                // console.log(info.players[j]);
                 res.status(200).send(info.players[j]);
                 return;
             }
@@ -65,7 +77,8 @@ app.get('/leaderboard/:gameName/:tagLine', async (req, res) => {
 
         index += 200;
     }
-    return "mf not here";
+    res.status(200).send("not on leaderboard");
+    return;
 });
 
 

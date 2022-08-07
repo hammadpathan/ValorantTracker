@@ -7,35 +7,27 @@ function checktheleaderboard() {
 
     document.getElementById("seconderrormsg").textContent = "";
     let theinputbox1 = document.getElementById("gamenamething");
-    let theinputbox2 = document.getElementById("gametagthing");
+    let playerid = theinputbox1.value;
 
-    if (theinputbox1.value == "" || theinputbox2.value == "") {
+    if (playerid == "") {
+        document.getElementById("seconderrormsg").textContent = "INVALID AGENT";
+        return;
+    }
+
+    if (playerid.indexOf("#") <= -1){
         document.getElementById("seconderrormsg").textContent = "INVALID AGENT";
         return;
     }
     else {
-        sendrequest();
+        if ((playerid.indexOf('#') == 0) || (playerid.indexOf('#') == (playerid.length - 1))) {
+            document.getElementById("seconderrormsg").textContent = "INVALID AGENT";
+            return;
+        }
     }
+    sendrequest();
 }
 
-
-function replacecontainersecond() {
-    thecontainer.innerHTML = "";
-    thecontainer.classList.remove("removed");
-
-    //put the third page for searching and identifying the player
-
-    thecontainer.append("LOOKING FOR: " + gamenamestuff + "#" + gametagstuff);
-
-    thecontainer.append(document.createElement("hr"));
-
-    let searchtext = document.createElement("p");
-    thecontainer.append(searchtext);
-    searchtext.classList.add("searchtext");
-    searchtext.textContent = "SEARCHING:";
-
-    thecontainer.append(document.createElement("br"));
-
+function replaceloadinglogo() {
     let searchcontainer = document.createElement("div");
     thecontainer.append(searchcontainer);
     searchcontainer.classList.add("searchcontainer");
@@ -76,37 +68,98 @@ function replacecontainersecond() {
     rr.id = "rrtext";
 
     rankname.classList.add("rankname");
+    rankname.id = ("ranknametext");
     rr.classList.add("rr");    
 
     rankrrcontainer.append(rankname);
     rankrrcontainer.append(rr);
 }
 
+
+function replacecontainersecond() {
+    thecontainer.innerHTML = "";
+    thecontainer.classList.remove("removed");
+
+    //put the third page for searching and identifying the player
+
+    thecontainer.append("LOOKING FOR: " + gamenamestuff + "#" + gametagstuff);
+
+    thecontainer.append(document.createElement("hr"));
+
+    let searchtext = document.createElement("p");
+    thecontainer.append(searchtext);
+    searchtext.id = "searchtext";
+    searchtext.classList.add("searchtext");
+    searchtext.textContent = "SEARCHING:";
+
+    thecontainer.append(document.createElement("br"));
+
+    let loadercirclepadding = document.createElement("div");
+    thecontainer.append(loadercirclepadding);
+    loadercirclepadding.id = "loaderpadding";
+    loadercirclepadding.classList.add("loaderpadding");
+
+    let loadercircle = document.createElement("div");
+    thecontainer.append(loadercircle);
+    loadercircle.classList.add("loader");
+    loadercircle.id = "loader";
+}
+
 function displayplayer(thedata) {
+
+    var therank;
+
+    document.getElementById("loader").remove();
+    document.getElementById("loaderpadding").remove();
+    document.getElementById("searchtext").textContent = "FOUND:"
+
+    replaceloadinglogo();
+
     if (thedata.leaderboardRank <= 500) {
-        document.getElementById("rankimg").src = "Radiant.png";
+        document.getElementById("rankimg").src = "./img/Radiant.png";
+        therank = "Radiant";
     }
     else {
         if (thedata.rankedRating >= 200) {
-            document.getElementById("rankimg").src = "Immortal3.png";
+            document.getElementById("rankimg").src = "./img/Immortal3.png";
+            therank = "Immortal 3";
         }
         else if ((thedata.rankedRating < 200) && (thedata.rankedRating >= 90)) {
-            document.getElementById("rankimg").src = "Immortal2.png";
+            document.getElementById("rankimg").src = "./img/Immortal2.png";
+            therank = "Immortal 2";
         }
         else {
-            document.getElementById("rankimg").src = "Immortal1.png";
+            document.getElementById("rankimg").src = "./img/Immortal1.png";
+            therank = "Immortal 1";
         }
     }  
 
+    document.getElementById("ranknametext").textContent = therank;
     document.getElementById("rrtext").textContent = thedata.rankedRating + "RR";
     document.getElementById("rank").textContent = "#" + thedata.leaderboardRank;
     document.getElementById("select").textContent = thedata.gameName + "#" + thedata.tagLine;
 }
 
+function displaynoplayer() {
+
+    document.getElementById("loader").remove();
+    document.getElementById("loaderpadding").remove();
+    document.getElementById("searchtext").textContent = "NOT FOUND:"
+
+    let noplayer = document.createElement("p");
+    noplayer.id = "select";
+    thecontainer.append(noplayer);
+    noplayer.classList.add("noplayer");
+    noplayer.textContent = "player not on leaderboard yet"
+
+}
+
 function sendrequest() {
 
-    gamenamestuff = document.getElementById("gamenamething").value;
-    gametagstuff = document.getElementById("gametagthing").value;
+    gameplayerstuff = document.getElementById("gamenamething").value;
+    playerdata = gameplayerstuff.split("#");
+    gamenamestuff = playerdata[0];
+    gametagstuff = playerdata[1];
 
     var request = new XMLHttpRequest();
 
@@ -121,7 +174,12 @@ function sendrequest() {
 
 
     request.onload = function () {
-        displayplayer(JSON.parse(this.response));
+        if (this.response == "not on leaderboard") {
+            displaynoplayer();
+        }
+        else {
+            displayplayer(JSON.parse(this.response));
+        }
     }
 
     request.send();
