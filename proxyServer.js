@@ -7,7 +7,7 @@ var app = express();
 
 app.use(cors());
 
-const API_KEY = "RGAPI-2b1faece-43d5-4fe5-b72a-ba765d7eb2bd";
+const API_KEY = "";
 
 function getActID() {
     return axios.get("https://na.api.riotgames.com" + "/val/content/v1/contents" + "?api_key=" + API_KEY)
